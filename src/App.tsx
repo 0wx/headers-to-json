@@ -8,7 +8,7 @@ const textAreaStyle: CSS.Properties = {
   backgroundColor: 'black',
   color: 'white',
   outline: 'none',
-  margin: '10px'
+  margin: '10px',
 }
 
 const mainDiv: CSS.Properties = {
@@ -72,8 +72,8 @@ function copy(text: string): void {
 }
 
 function App() {
-  const [text, setText] = useState('{}')
-
+  const initialValue = 'you:cutie\nI:like you\n\nso: take care'
+  const [text, setText] = useState(parser(initialValue))
   return (
     <div style={mainDiv}>
       <div>
@@ -81,13 +81,23 @@ function App() {
           <textarea
             style={textAreaStyle}
             onChange={(event) => setText(parser(event.target.value))}
-          ></textarea>
+            onFocus={(event) => {
+              if (event.target.value === initialValue) {
+                event.target.value = ''
+                setText('{}')
+              }
+            }}
+          >
+            {initialValue}
+          </textarea>
         </div>
         <div>
           <textarea id="result" value={text} style={textAreaStyle}></textarea>
         </div>
         <div style={mainDiv}>
-          <button style={button} onClick={() => copy(text)}>Copy Result</button>
+          <button style={button} onClick={() => copy(text)}>
+            Copy Result
+          </button>
         </div>
       </div>
     </div>
